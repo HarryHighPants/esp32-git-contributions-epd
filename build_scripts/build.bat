@@ -1,1 +1,0 @@
-arduino-cli compile --fqbn esp32:esp32:lilygo_t_display --output-dir ./build ./esp32-git-contributions-epd.ino
