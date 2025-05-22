@@ -1,2 +1,0 @@
-cd build
-esptool.py --chip esp32 --port /dev/cu.usbserial-58971233861 --baud 115200 write_flash -z 0x1000 esp32-git-contributions-epd.ino.bootloader.bin 0x8000 esp32-git-contributions-epd.ino.partitions.bin 0x10000 esp32-git-contributions-epd.ino.bin

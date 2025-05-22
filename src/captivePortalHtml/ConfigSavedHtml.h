@@ -1,4 +1,5 @@
-const char configSavedHtml[] PROGMEM = R"rawliteral(
+#pragma once
+constexpr char configSavedHtml[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="en">
   <head>
