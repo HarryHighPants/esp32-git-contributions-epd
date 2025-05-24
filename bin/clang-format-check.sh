@@ -1,6 +1,6 @@
 #!/bin/bash
 
-find src \( -name "*.cpp" -o -name "*.h" \) -exec clang-format -style=google -i -n --Werror {} +
+find ../src \( -name "*.cpp" -o -name "*.h" \) -exec clang-format -style=google -i -n --Werror {} +
 
 if [[ $? -ne 0 ]]; then
   echo "Code style issues found. Please run './bin/clang-format-fix.sh' to fix them."
