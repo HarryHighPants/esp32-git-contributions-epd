@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contrib Config</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #1e1e2e;
+      color: #ffffff;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    input[type="text"], input[type="password"], input[type="url"], input[type="number"] {
+      font-family: monospace;
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      background-color: #3e3e4e;
+      color: #fff;
+      margin-top: 5px;
+    }
+
+    input[type="checkbox"] {
+      margin-top: 25px;
+      margin-left: 15px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a045;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 3px 2px #368db2;
+    }
+
+    input::placeholder {
+      color: #bbb;
+    }
+
+    .inputContainer {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .inputContainer[data-input-prefix] input {
+      padding-left: 25px;
+    }
+
+    .inputContainer[data-input-prefix]::after {
+      content: attr(data-input-prefix);
+      color: #d9d9d9;
+      font-weight: bold;
+      position: absolute;
+      margin-left: 11px;
+      margin-top: 5px;
+    }
+
+    label {
+      font-family: monospace;
+      text-transform: uppercase;
+      font-size: 0.6rem;
+      font-style: normal;
+      color: #bbb;
+      margin-top: 25px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      background-color: #2e2e3e;
+      padding: 2rem;
+      margin: 0 2rem 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 350px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header > pre {
+      font-size: 0.4rem;
+      text-align: center;
+      color: #fff;
+      margin-top: 3px;
+      margin-bottom: 5px;
+      line-height: 0.4rem;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <pre class="header">
+&nbsp;█████╗░░█████╗░███╗░░██╗███████╗██╗░██████╗
+██╔══██╗██╔══██╗████╗░██║██╔════╝██║██╔════╝
+██║░░╚═╝██║░░██║██╔██╗██║█████╗░░██║██║░░██╗
+██║░░██╗██║░░██║██║╚████║██╔══╝░░██║██║░░╚██╗
+╚█████╔╝╚█████╔╝██║░╚███║██║░░░░░██║╚██████╔╝
+&nbsp;╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝░╚═════╝
+  </pre>
+  <form action="/submit">
+    <!-- Github Username -->
+    <label for="username">Github Username</label>
+    <div class="inputContainer" data-input-prefix="/">
+      <input
+        type="text"
+        value="{{username}}"
+        id="username"
+        name="username"
+        placeholder="HarryHighPants"
+        required
+      />
+    </div>
+
+    <!-- WiFi Credentials -->
+    <label for="wifi-ssid">Wifi SSID (2.4Ghz only, case sensitive)</label>
+    <input
+      type="text"
+      value="{{wifi-ssid}}"
+      id="wifi-ssid"
+      name="wifi-ssid"
+      placeholder="WiFi SSID"
+      required
+    />
+    <label for="wifi-password">Wifi Password</label>
+    <input
+      type="password"
+      value="{{wifi-password}}"
+      id="wifi-password"
+      name="wifi-password"
+      placeholder="Password"
+      required
+    />
+
+    <!-- Sync Interval -->
+    <label for="interval">Sync interval (Hours)</label>
+    <input
+      type="number"
+      value="{{interval}}"
+      id="interval"
+      name="interval"
+      placeholder="4"
+      required
+    />
+
+    <!-- Dark Mode -->
+    <div class="inputContainer">
+      <label for="dark-mode">Dark Mode</label>
+      <input
+        type="checkbox"
+        id="dark-mode"
+        name="dark-mode"
+        {{dark-mode}}
+      />
+    </div>
+
+    <!-- API URL -->
+    <label for="url">API url override (optional)</label>
+    <input
+      type="url"
+      value="{{url}}"
+      id="url"
+      name="url"
+      placeholder="https://contributions-api.harryab.com/"
+    />
+
+    <input type="submit" value="Save Configuration"/>
+  </form>
+</div>
+</body>
+</html>
