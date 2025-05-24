@@ -10,7 +10,7 @@
 #include "assets/muMatrix8ptRegular.h"
 
 GxEPD2_DISPLAY_CLASS<GxEPD2_DRIVER_CLASS, GxEPD2_DRIVER_CLASS::HEIGHT> display(
-  GxEPD2_DRIVER_CLASS(EPD_PIN_CS, EPD_PIN_DC, EPD_PIN_RST, EPD_PIN_BUSY));
+    GxEPD2_DRIVER_CLASS(EPD_PIN_CS, EPD_PIN_DC, EPD_PIN_RST, EPD_PIN_BUSY));
 
 Colors::Colors(const bool darkMode) {
   background = darkMode ? GxEPD_BLACK : GxEPD_WHITE;
@@ -26,7 +26,7 @@ uint16_t Colors::fromLevel(const int level) const {
   return this->foreground;
 }
 
-ScreenController::ScreenController(UserConfig *config, State *state)
+ScreenController::ScreenController(UserConfig* config, State* state)
     : colors(config->darkMode) {
   this->config = config;
   this->state = state;
