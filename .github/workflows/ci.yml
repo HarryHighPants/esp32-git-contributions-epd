@@ -24,8 +24,12 @@ jobs:
       - name: Build PlatformIO Project
         run: pio run
 
-      - name: Install clang-format
-        run: sudo apt-get install clang-format
+      - name: Install clang-format-20
+        run: |
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+          sudo add-apt-repository 'deb http://apt.llvm.org/noble/ llvm-toolchain-noble-20 main'
+          sudo apt-get update
+          sudo apt-get install -y clang-format-20
 
-      - name: Run clang-format
-        run: ./bin/clang-format-check.sh
+      - name: Run clang-format-check
+        run: PATH="/usr/lib/llvm-20/bin:$PATH" ./bin/clang-format-check.sh
