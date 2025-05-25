@@ -5,14 +5,13 @@
 #include <WiFiClientSecure.h>
 
 #include "DeviceConfig.h"
-#include "State.h"
 
 WiFiClientSecure client;
 HTTPClient http;
 
 ContributionsApi::ContributionsApi(UserConfig* config) { this->config = config; }
 
-String ContributionsApi::fetchHttpResponse() {
+String ContributionsApi::fetchHttpResponse() const {
   const String url = String(this->config->apiUrl) + String(this->config->username) + "?weeks=" + String(WEEKS);
 
   Serial.println("Fetching contributions data from: " + url);
@@ -29,12 +28,12 @@ String ContributionsApi::fetchHttpResponse() {
   return payload;
 }
 
-bool ContributionsApi::fetchContributionsData(Contributions* contributions) {
+bool ContributionsApi::fetchContributionsData(CommitGraphContributions* contributions) const {
   JsonDocument doc;
   String payload = this->fetchHttpResponse();
   // Parse response
   // 2 weeks = [1, 0, 3, 1, 4, 0, 0, 1, 0, 3, 1, 4, 0, -1, -1]
-  DeserializationError error = deserializeJson(doc, payload);
+  const DeserializationError error = deserializeJson(doc, payload);
 
   if (error) {
     Serial.print("Failed to parse JSON: ");
@@ -42,7 +41,7 @@ bool ContributionsApi::fetchContributionsData(Contributions* contributions) {
     return false;
   }
 
-  JsonArray jsonArray = doc.as<JsonArray>();
+  const JsonArray jsonArray = doc.as<JsonArray>();
 
   if (jsonArray.size() != 7 * WEEKS) {
     Serial.println("Invalid response, expected " + String(7 * WEEKS) + " items, got " + String(jsonArray.size()));

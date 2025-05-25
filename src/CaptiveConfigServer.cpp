@@ -12,7 +12,7 @@ constexpr unsigned long configModeTimeout = 20 * 60 * 1000;  // 20 minutes
 DNSServer dnsServer;
 WebServer server(80);
 
-String buildConfigHtml(UserConfig* config) {
+String buildConfigHtml(const UserConfig* config) {
   auto html = String(configHtml);
   html.replace("{{username}}", config->username);
   html.replace("{{wifi-ssid}}", config->wifiSSID);

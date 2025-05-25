@@ -1,15 +1,19 @@
 #pragma once
 #include <Arduino.h>
 
-#include "State.h"
+#include "DeviceConfig.h"
 #include "UserConfig.h"
+
+struct CommitGraphContributions {
+  int week[WEEKS * 7] = {};
+};
 
 class ContributionsApi {
  public:
-  ContributionsApi(UserConfig* config);
-  bool fetchContributionsData(Contributions* contributions);
+  explicit ContributionsApi(UserConfig* config);
+  bool fetchContributionsData(CommitGraphContributions* contributions) const;
 
  private:
   UserConfig* config;
-  String fetchHttpResponse();
+  String fetchHttpResponse() const;
 };
