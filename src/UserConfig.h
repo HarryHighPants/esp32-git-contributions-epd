@@ -6,4 +6,6 @@ struct UserConfig {
   int syncInterval = 4;  // Hours
   bool darkMode = false;
   char apiUrl[100] = "https://contributions-api.harryab.com/";
+
+  bool isSet() const;
 };

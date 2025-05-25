@@ -5,7 +5,7 @@
 
 class CaptiveConfigServer {
  public:
-  CaptiveConfigServer(UserConfig* config);
+  explicit CaptiveConfigServer(UserConfig* config);
   void begin();
   bool getConfig() const;
   static void end();
