@@ -10,13 +10,10 @@
 WiFiClientSecure client;
 HTTPClient http;
 
-ContributionsApi::ContributionsApi(UserConfig* config) {
-  this->config = config;
-}
+ContributionsApi::ContributionsApi(UserConfig* config) { this->config = config; }
 
 String ContributionsApi::fetchHttpResponse() {
-  const String url = String(this->config->apiUrl) +
-                     String(this->config->username) + "?weeks=" + String(WEEKS);
+  const String url = String(this->config->apiUrl) + String(this->config->username) + "?weeks=" + String(WEEKS);
 
   Serial.println("Fetching contributions data from: " + url);
   client.setInsecure();
@@ -48,8 +45,7 @@ bool ContributionsApi::fetchContributionsData(Contributions* contributions) {
   JsonArray jsonArray = doc.as<JsonArray>();
 
   if (jsonArray.size() != 7 * WEEKS) {
-    Serial.println("Invalid response, expected " + String(7 * WEEKS) +
-                   " items, got " + String(jsonArray.size()));
+    Serial.println("Invalid response, expected " + String(7 * WEEKS) + " items, got " + String(jsonArray.size()));
     return false;
   }
 

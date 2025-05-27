@@ -26,8 +26,7 @@ uint16_t Colors::fromLevel(const int level) const {
   return this->foreground;
 }
 
-ScreenController::ScreenController(UserConfig* config, State* state)
-    : colors(config->darkMode) {
+ScreenController::ScreenController(UserConfig* config, State* state) : colors(config->darkMode) {
   this->config = config;
   this->state = state;
 }
@@ -40,8 +39,7 @@ void ScreenController::initScreen() {
   display.setTextSize(1);
 
   // Set background
-  display.fillRect(0, 0, display.width(), display.height(),
-                   this->colors.background);
+  display.fillRect(0, 0, display.width(), display.height(), this->colors.background);
 }
 
 void ScreenController::drawHeader() {
@@ -56,16 +54,13 @@ void ScreenController::drawHeader() {
   display.setCursor(display.width() - 25, 20);
   const int adcValue = analogRead(BAT_TEST_PIN);
   const float voltage = adcValue / 4095.0 * 3.3 * 2;
-  long percentage =
-      map(voltage * 1000, 3200, 3900, 0, 100);  // Use millivolts for mapping
+  long percentage = map(voltage * 1000, 3200, 3900, 0, 100);  // Use millivolts for mapping
   display.printf("%ld%%", percentage);
 
   // Draw error icons
   if (this->state->showingWifiError || this->state->showingFetchError) {
-    display.drawBitmap(
-        display.width() - 55, 8,
-        this->state->showingWifiError ? WifiErrorIcon : BrokenLinkIcon, 16, 16,
-        this->colors.foreground);
+    display.drawBitmap(display.width() - 55, 8, this->state->showingWifiError ? WifiErrorIcon : BrokenLinkIcon, 16, 16,
+                       this->colors.foreground);
   }
 }
 
@@ -91,17 +86,13 @@ void ScreenController::drawCommitGraph() {
       const int index = rows * column + row;
       const int level = this->state->contributions.week[index];
 
-      display.fillRoundRect(squareX, squareY, squareSize, squareSize,
-                            borderThickness, this->colors.fromLevel(level));
-      display.drawRoundRect(squareX, squareY, squareSize, squareSize,
-                            borderThickness, this->colors.fromLevel(level + 1));
+      display.fillRoundRect(squareX, squareY, squareSize, squareSize, borderThickness, this->colors.fromLevel(level));
+      display.drawRoundRect(squareX, squareY, squareSize, squareSize, borderThickness,
+                            this->colors.fromLevel(level + 1));
 
-      const bool isToday =
-          level != -1 && (index == total - 1 ||
-                          this->state->contributions.week[index + 1] == -1);
+      const bool isToday = level != -1 && (index == total - 1 || this->state->contributions.week[index + 1] == -1);
       if (isToday) {
-        display.drawRoundRect(squareX, squareY, squareSize, squareSize,
-                              borderThickness, this->colors.foreground);
+        display.drawRoundRect(squareX, squareY, squareSize, squareSize, borderThickness, this->colors.foreground);
       }
     }
   }
@@ -116,8 +107,7 @@ void ScreenController::drawConfigModeScreen() {
 
   int margin = 25;
   constexpr int lineHeight = 12;
-  display.drawBitmap(display.width() - margin - 32, margin - 8, WifiIcon, 32,
-                     32, this->colors.foreground);
+  display.drawBitmap(display.width() - margin - 32, margin - 8, WifiIcon, 32, 32, this->colors.foreground);
 
   // Title
   display.setTextSize(2);

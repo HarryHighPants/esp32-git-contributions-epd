@@ -46,8 +46,7 @@ bool connectWifi() {
   WiFi.begin(config.wifiSSID, config.wifiPassword);
   Serial.print("\nConnecting to Wifi: ");
   const unsigned long startAttemptTime = millis();
-  while (WiFi.status() != WL_CONNECTED &&
-         millis() - startAttemptTime < timeout) {
+  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < timeout) {
     delay(500);
     Serial.print(".");
   }
@@ -67,8 +66,7 @@ void setup() {
   const esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
   switch (wakeup_reason) {
     case ESP_SLEEP_WAKEUP_EXT0:  // Wakeup caused by GPIO (external wakeup)
-      Serial.println(
-          "Wakeup caused by external signal using GPIO (button press)");
+      Serial.println("Wakeup caused by external signal using GPIO (button press)");
       if (isHoldingButton()) {
         loadConfigAndRestart();
         return;
@@ -102,8 +100,7 @@ void setup() {
   state.showingWifiError = false;
 
   Contributions newContributions;
-  const bool fetchSuccessful =
-      contributionsApi.fetchContributionsData(&newContributions);
+  const bool fetchSuccessful = contributionsApi.fetchContributionsData(&newContributions);
   if (!fetchSuccessful) {
     Serial.println("Failed to fetch contributions data");
     state.showingFetchError = true;
@@ -124,7 +121,6 @@ void loop() {
   // button is pressed)
   esp_sleep_enable_ext0_wakeup(static_cast<gpio_num_t>(BUTTON_PIN), LOW);
 
-  Serial.println("Going to sleep for " + String(config.syncInterval) +
-                 " hours");
+  Serial.println("Going to sleep for " + String(config.syncInterval) + " hours");
   esp_deep_sleep(config.syncInterval * 3600e6);  // syncInterval * 1 hour
 }

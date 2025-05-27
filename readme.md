@@ -136,7 +136,19 @@ If you'd like to develop the code yourself you can use PlatformIO to build and u
 
 ### Releasing
 
-To build a new version of the code for release, simply run the following command in the root of the project:
+Everytime a commit is pushed to the main branch, the code is built using PlatformIO. To create a release, take the last
+successful build from the [GitHub Actions](https://github.com/HarryHighPants/esp32-git-contributions-epd/actions/workflows/ci.yml?query=branch:main)
+and download the zip file from the artifacts section. This zip file contains the compiled firmware and the necessary 
+files to flash the esp32. The files are:
+- `bootloader.bin`: The bootloader for the esp32
+- `partitions.bin`: The partitions for the esp32
+- `firmware.bin`: The compiled firmware for the esp32
+
+You can then flash these files to your esp32 using the `esptool.py` command as described in the [Install](#install) 
+section.
+
+If you'd like to package a version of the code for release locally, simply run the following command in the root of the 
+project:
 
 ```bash
 ./bin/build-release-zip.sh

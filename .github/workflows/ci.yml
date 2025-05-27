@@ -1,8 +1,14 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        board: [lilygo213, lilygo266]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +28,13 @@ jobs:
         run: pip install --upgrade platformio
 
       - name: Build PlatformIO Project
-        run: pio run
+        run: pio run -e ${{ matrix.board }}
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.board }}
+          path: .pio/build/${{ matrix.board }}/*.bin
 
   lint:
     runs-on: ubuntu-latest

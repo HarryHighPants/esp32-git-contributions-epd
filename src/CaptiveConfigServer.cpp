@@ -34,8 +34,7 @@ void CaptiveConfigServer::begin() {
 
   this->configPageHtml = buildConfigHtml(this->config);
 
-  server.on("/portal",
-            [this] { server.send(200, "text/html", this->configPageHtml); });
+  server.on("/portal", [this] { server.send(200, "text/html", this->configPageHtml); });
 
   server.on("/submit", [this] {
     // Read the form values from the param and store them in RTC memory
