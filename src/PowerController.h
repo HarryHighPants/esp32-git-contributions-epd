@@ -1,7 +1,7 @@
 #pragma once
 #include "UserConfig.h"
 
-class SleepController {
+class PowerController {
  public:
   enum WakeReason {
     BUTTON_PRESS,
@@ -10,9 +10,10 @@ class SleepController {
     UNKNOWN,
   };
 
-  explicit SleepController(UserConfig *config);
+  explicit PowerController(UserConfig *config);
   void deepSleep() const;
   static WakeReason getWakeReason();
+  static int getBatteryPercentage();
 
  private:
   UserConfig *config;

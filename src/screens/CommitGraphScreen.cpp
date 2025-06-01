@@ -1,5 +1,6 @@
 #include "CommitGraphScreen.h"
 
+#include "PowerController.h"
 #include "TimeUtils.h"
 #include "assets/BrokenLinkIcon.h"
 #include "assets/GithubIcon.h"
@@ -27,12 +28,6 @@ CommitGraphScreen::CommitGraphScreen(DisplayController *displayController, WifiC
   this->contributionsApi = contributionsApi;
   this->config = config;
   this->state = state;
-}
-
-int getBatteryPercentage() {
-  const int adcValue = analogRead(BAT_TEST_PIN);
-  const float voltage = adcValue / 4095.0 * 3.3 * 2;
-  return static_cast<int>(map(voltage * 1000, 3200, 3900, 0, 100));
 }
 
 void CommitGraphScreen::draw() const {
@@ -81,9 +76,11 @@ void CommitGraphScreen::draw() const {
   }
 
   // Draw battery icon & percentage
-  displayController->drawBatteryIcon(8, displayController->display.height() - 5, getBatteryPercentage());
-  displayController->drawText(String(getBatteryPercentage()) + "%", 18, displayController->display.height() - 1, 1,
-                              displayController->colors.darkForeground, &Tiny5_Regular5pt7b);
+  const int batteryPercentage = PowerController::getBatteryPercentage();
+  displayController->drawBatteryIcon(8, displayController->display.height() - 5, batteryPercentage);
+  displayController->drawText(String(batteryPercentage) + "%", 18,
+                              displayController->display.height() - 1, 1, displayController->colors.darkForeground,
+                              &Tiny5_Regular5pt7b);
 
   // Draw the current time
   displayController->drawText(TimeUtils::nowString(), displayController->display.width() - 90,

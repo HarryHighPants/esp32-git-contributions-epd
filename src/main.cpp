@@ -5,7 +5,7 @@
 #include "CaptiveConfigServer.h"
 #include "ContributionsApi.h"
 #include "DisplayController.h"
-#include "SleepController.h"
+#include "PowerController.h"
 #include "TimeUtils.h"
 #include "UserConfig.h"
 #include "WifiController.h"
@@ -17,7 +17,7 @@ RTC_DATA_ATTR CommitGraphScreen::State commitGraphScreenState;
 
 // Controllers
 DisplayController displayController(config.display.darkMode);
-SleepController sleepController(&config);
+PowerController powerController(&config);
 WifiController wifiController(&config);
 
 // Tools
@@ -59,8 +59,8 @@ void setup() {
   delay(10);  // TODO: Would love to remove this, but it seems like config.load() hangs if there is no delay in here
   config.load();
 
-  const SleepController::WakeReason wakeReason = SleepController::getWakeReason();
-  if (wakeReason == SleepController::WakeReason::BUTTON_HOLD) {
+  const PowerController::WakeReason wakeReason = PowerController::getWakeReason();
+  if (wakeReason == PowerController::WakeReason::BUTTON_HOLD) {
     Serial.println("Button held, entering config mode");
     loadConfigAndRestart();
     // This shouldn't be reached, as loadConfigAndRestart() will restart the device
@@ -79,4 +79,4 @@ void setup() {
   commitGraphScreen.fetchAndDraw();
 }
 
-void loop() { sleepController.deepSleep(); }
+void loop() { powerController.deepSleep(); }
