@@ -5,12 +5,12 @@
 #include "assets/WifiErrorIcon.h"
 
 // Override the contributions and return true if any changed
-bool CommitGraphScreenState::storeContributionIfChanged(const CommitGraphContributions *newContributions) {
+bool CommitGraphScreen::State::storeContributionIfChanged(const ContributionsApi::Data *newContributions) {
   bool changed = false;
 
   for (int i = 0; i < 7 * WEEKS; i++) {
-    if (this->contributions.week[i] != newContributions->week[i]) {
-      this->contributions.week[i] = newContributions->week[i];
+    if (contributions.week[i] != newContributions->week[i]) {
+      contributions.week[i] = newContributions->week[i];
       changed = true;
     }
   }
@@ -19,8 +19,7 @@ bool CommitGraphScreenState::storeContributionIfChanged(const CommitGraphContrib
 }
 
 CommitGraphScreen::CommitGraphScreen(DisplayController *displayController, WifiController *wifiController,
-                                     ContributionsApi *contributionsApi, UserConfig *config,
-                                     CommitGraphScreenState *state) {
+                                     ContributionsApi *contributionsApi, UserConfig *config, State *state) {
   this->displayController = displayController;
   this->wifiController = wifiController;
   this->contributionsApi = contributionsApi;
@@ -39,7 +38,7 @@ void CommitGraphScreen::draw() const {
 
   // Draw Github icon and username
   displayController->display.drawBitmap(7, 8, GithubIcon, 16, 16, displayController->colors.foreground);
-  displayController->drawText("/" + String(config->username), 29, 20);
+  displayController->drawText("/" + String(config->commitGraph.username), 29, 20);
 
   // Draw battery percentage
   displayController->drawText(String(getBatteryPercentage()) + "%", displayController->display.width() - 25, 20);
@@ -96,7 +95,7 @@ void CommitGraphScreen::fetchAndDraw() const {
   }
   state->showingWifiError = false;
 
-  CommitGraphContributions newContributions;
+  ContributionsApi::Data newContributions;
   const bool fetchSuccessful = contributionsApi->fetchContributionsData(&newContributions);
   if (!fetchSuccessful) {
     Serial.println("Failed to fetch contributions data");
@@ -130,7 +129,7 @@ void CommitGraphScreen::drawFetchError() const {
 }
 
 void CommitGraphScreen::resetState() const {
-  state->contributions = CommitGraphContributions();
+  state->contributions = ContributionsApi::Data();
   state->showingWifiError = false;
   state->showingFetchError = false;
 }

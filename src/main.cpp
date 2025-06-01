@@ -11,12 +11,11 @@
 #include "screens/CommitGraphScreen.h"
 #include "screens/ConfigModeScreen.h"
 
-// RTC memory - Clears when the device is powered off but is retained on sleep
-RTC_DATA_ATTR UserConfig config;
-RTC_DATA_ATTR CommitGraphScreenState commitGraphScreenState;
+UserConfig config = UserConfig::load();
+RTC_DATA_ATTR CommitGraphScreen::State commitGraphScreenState;
 
 // Controllers
-DisplayController displayController(config.darkMode);
+DisplayController displayController(config.display.darkMode);
 SleepController sleepController(&config);
 WifiController wifiController(&config);
 
@@ -40,6 +39,7 @@ void loadConfigAndRestart() {
   captiveConfigServer.begin();
   if (captiveConfigServer.getConfig()) {
     Serial.println("Successfully loaded new config");
+    config.save();
     resetScreenStates();
   } else {
     Serial.println("Failed to load new config");
@@ -54,8 +54,8 @@ void setup() {
   Serial.begin(115200);
   pinMode(BUTTON_PIN, INPUT);
 
-  const WakeReason wakeReason = SleepController::getWakeReason();
-  if (wakeReason == BUTTON_HOLD) {
+  const SleepController::WakeReason wakeReason = SleepController::getWakeReason();
+  if (wakeReason == SleepController::WakeReason::BUTTON_HOLD) {
     Serial.println("Button held, entering config mode");
     loadConfigAndRestart();
     // This shouldn't be reached, as loadConfigAndRestart() will restart the device

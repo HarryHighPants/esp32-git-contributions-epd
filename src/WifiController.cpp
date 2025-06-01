@@ -9,7 +9,7 @@ WifiController::WifiController(UserConfig *config) { this->config = config; }
 bool WifiController::connectWifi() const {
   constexpr unsigned long timeout = 6000;  // 6 seconds timeout
 
-  WiFi.begin(config->wifiSSID, config->wifiPassword);
+  WiFi.begin(config->wifi.ssid, config->wifi.password);
 
   Serial.print("\nConnecting to Wifi: ");
   const unsigned long startAttemptTime = millis();

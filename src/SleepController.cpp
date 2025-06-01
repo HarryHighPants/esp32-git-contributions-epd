@@ -12,11 +12,11 @@ void SleepController::deepSleep() const {
   // button is pressed)
   esp_sleep_enable_ext0_wakeup(static_cast<gpio_num_t>(BUTTON_PIN), LOW);
 
-  Serial.println("Going to sleep for " + String(config->syncInterval) + " hours");
-  esp_deep_sleep(static_cast<unsigned long long>(3600e6) * config->syncInterval);  // syncInterval * 1 hour
+  Serial.println("Going to sleep for " + String(config->energy.syncInterval) + " hours");
+  esp_deep_sleep(static_cast<unsigned long long>(3600e6) * config->energy.syncInterval);  // syncInterval * 1 hour
 }
 
-WakeReason SleepController::getWakeReason() {
+SleepController::WakeReason SleepController::getWakeReason() {
   const esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
   if (wakeup_reason == ESP_SLEEP_WAKEUP_EXT0) {
     // Wakeup caused by GPIO (external wakeup)

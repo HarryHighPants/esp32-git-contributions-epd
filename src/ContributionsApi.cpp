@@ -12,7 +12,8 @@ HTTPClient http;
 ContributionsApi::ContributionsApi(UserConfig* config) { this->config = config; }
 
 String ContributionsApi::fetchHttpResponse() const {
-  const String url = String(this->config->apiUrl) + String(this->config->username) + "?weeks=" + String(WEEKS);
+  const String url =
+      String(config->commitGraph.apiUrl) + String(config->commitGraph.username) + "?weeks=" + String(WEEKS);
 
   Serial.println("Fetching contributions data from: " + url);
   client.setInsecure();
@@ -28,9 +29,9 @@ String ContributionsApi::fetchHttpResponse() const {
   return payload;
 }
 
-bool ContributionsApi::fetchContributionsData(CommitGraphContributions* contributions) const {
+bool ContributionsApi::fetchContributionsData(Data* contributions) const {
   JsonDocument doc;
-  String payload = this->fetchHttpResponse();
+  String payload = fetchHttpResponse();
   // Parse response
   // 2 weeks = [1, 0, 3, 1, 4, 0, 0, 1, 0, 3, 1, 4, 0, -1, -1]
   const DeserializationError error = deserializeJson(doc, payload);

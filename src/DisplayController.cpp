@@ -5,14 +5,14 @@
 
 #include "assets/muMatrix8ptRegular.h"
 
-DisplayColors::DisplayColors(const bool darkMode) {
+DisplayController::Colors::Colors(const bool darkMode) {
   background = darkMode ? GxEPD_BLACK : GxEPD_WHITE;
   lightForeground = darkMode ? GxEPD_DARKGREY : GxEPD_LIGHTGREY;
   darkForeground = darkMode ? GxEPD_LIGHTGREY : GxEPD_DARKGREY;
   foreground = darkMode ? GxEPD_WHITE : GxEPD_BLACK;
 }
 
-uint16_t DisplayColors::fromLevel(const int level) const {
+uint16_t DisplayController::Colors::fromLevel(const int level) const {
   if (level <= 0) return background;
   if (level == 1) return lightForeground;
   if (level == 2) return darkForeground;
