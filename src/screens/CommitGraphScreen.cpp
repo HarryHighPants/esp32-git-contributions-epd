@@ -1,7 +1,9 @@
 #include "CommitGraphScreen.h"
 
+#include "TimeUtils.h"
 #include "assets/BrokenLinkIcon.h"
 #include "assets/GithubIcon.h"
+#include "assets/Tiny5_Regular5pt7b.h"
 #include "assets/WifiErrorIcon.h"
 
 // Override the contributions and return true if any changed
@@ -37,15 +39,12 @@ void CommitGraphScreen::draw() const {
   displayController->drawBackground();
 
   // Draw Github icon and username
-  displayController->display.drawBitmap(7, 8, GithubIcon, 16, 16, displayController->colors.foreground);
-  displayController->drawText("/" + String(config->commitGraph.username), 29, 20);
-
-  // Draw battery percentage
-  displayController->drawText(String(getBatteryPercentage()) + "%", displayController->display.width() - 25, 20);
+  displayController->display.drawBitmap(7, 6, GithubIcon, 16, 16, displayController->colors.foreground);
+  displayController->drawText("/" + String(config->commitGraph.username), 29, 18);
 
   // Draw error icons
   if (state->showingWifiError || state->showingFetchError) {
-    displayController->display.drawBitmap(displayController->display.width() - 55, 8,
+    displayController->display.drawBitmap(displayController->display.width() - 55, 6,
                                           state->showingWifiError ? WifiErrorIcon : BrokenLinkIcon, 16, 16,
                                           displayController->colors.foreground);
   }
@@ -57,7 +56,7 @@ void CommitGraphScreen::draw() const {
   const int gridSize = displayController->display.width() / columns;
   const int squareSize = gridSize - squareMargin;
   constexpr int borderThickness = 3;
-  constexpr int yOffset = 24;
+  constexpr int yOffset = 22;
   constexpr int xOffset = 5;
 
   // Draw squares
@@ -80,6 +79,16 @@ void CommitGraphScreen::draw() const {
       }
     }
   }
+
+  // Draw battery icon & percentage
+  displayController->drawBatteryIcon(8, displayController->display.height() - 5, getBatteryPercentage());
+  displayController->drawText(String(getBatteryPercentage()) + "%", 18, displayController->display.height() - 1, 1,
+                              displayController->colors.darkForeground, &Tiny5_Regular5pt7b);
+
+  // Draw the current time
+  displayController->drawText(TimeUtils::nowString(), displayController->display.width() - 90,
+                              displayController->display.height() - 1, 1, displayController->colors.darkForeground,
+                              &Tiny5_Regular5pt7b);
 
   // Draw the updates
   displayController->displayAndHibernate();

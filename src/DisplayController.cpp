@@ -23,9 +23,6 @@ DisplayController::DisplayController(bool darkMode)
     : display(GxEPD2_DRIVER_CLASS(EPD_PIN_CS, EPD_PIN_DC, EPD_PIN_RST, EPD_PIN_BUSY)), colors(darkMode) {
   display.init(115200, true, 2, false);
   display.setRotation(1);  // Landscape
-  display.setTextColor(colors.foreground);
-  display.setFont(&muMatrix8ptRegular);
-  display.setTextSize(1);
 }
 
 void DisplayController::drawBackground() {
@@ -36,9 +33,48 @@ void DisplayController::drawBackground() {
 void DisplayController::drawText(const String &text, const int x, const int y) { drawText(text, x, y, 1); }
 
 void DisplayController::drawText(const String &text, const int x, const int y, const int textSize) {
+  drawText(text, x, y, textSize, colors.foreground);
+}
+
+void DisplayController::drawText(const String &text, const int x, const int y, const int textSize,
+                                 const uint16_t color) {
+  drawText(text, x, y, textSize, color, &muMatrix8ptRegular);
+}
+
+void DisplayController::drawText(const String &text, const int x, const int y, const GFXfont *font) {
+  drawText(text, x, y, 1, colors.foreground, font);
+}
+
+void DisplayController::drawText(const String &text, const int x, const int y, const int textSize, const uint16_t color,
+                                 const GFXfont *font) {
+  display.setTextColor(color);
+  display.setFont(font);
+  display.setTextSize(1);
   display.setTextSize(textSize);
   display.setCursor(x, y);
   display.print(text);
+}
+
+void DisplayController::drawBatteryIcon(const int x, const int y, const int percentage) {
+  constexpr int batteryWidth = 7;
+  constexpr int batteryHeight = 5;
+
+  // Top line
+  display.drawLine(x, y, x + batteryWidth - 2, y, colors.darkForeground);
+  // Bottom line
+  display.drawLine(x, y + batteryHeight - 1, x + batteryWidth - 2, y + batteryHeight - 1, colors.darkForeground);
+  // Left line
+  display.drawLine(x, y, x, y + batteryHeight - 1, colors.darkForeground);
+  // Batter end
+  display.drawLine(x + batteryWidth - 2, y, x + batteryWidth - 2, y + batteryHeight - 1, colors.darkForeground);
+  display.drawLine(x + batteryWidth - 1, y + 1, x + batteryWidth - 1, y + batteryHeight - 2, colors.darkForeground);
+
+  // The +1 is to round up, so that we always fill at least one pixel
+  int filledWidth = percentage * (batteryWidth - 2) / 100 + 1;
+  if (filledWidth > batteryWidth - 2) {
+    filledWidth = batteryWidth - 2;  // Ensure we don't overflow
+  }
+  display.fillRect(x + 1, y + 1, filledWidth, batteryHeight - 2, colors.lightForeground);
 }
 
 void DisplayController::displayAndHibernate() {
