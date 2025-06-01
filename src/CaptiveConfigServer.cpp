@@ -4,8 +4,8 @@
 #include <WebServer.h>
 #include <WiFi.h>
 
-#include "captivePortalHtml/ConfigHtml.h"
-#include "captivePortalHtml/ConfigSavedHtml.h"
+#include "captivePortalHtml/ConfigHtml.generated.h"
+#include "captivePortalHtml/ConfigSavedHtml.generated.h"
 
 const auto configSSID = "Contributions Screen";
 constexpr unsigned long configModeTimeout = 20 * 60 * 1000;  // 20 minutes
@@ -13,7 +13,7 @@ DNSServer dnsServer;
 WebServer server(80);
 
 String buildConfigHtml(const UserConfig* config) {
-  auto html = String(configHtml);
+  auto html = String(ConfigHtml);
   html.replace("{{username}}", config->username);
   html.replace("{{wifi-ssid}}", config->wifiSSID);
   html.replace("{{wifi-password}}", config->wifiPassword);
@@ -49,7 +49,7 @@ void CaptiveConfigServer::begin() {
 
     Serial.println("Saved updated config");
 
-    server.send(200, "text/html", configSavedHtml);
+    server.send(200, "text/html", ConfigSavedHtml);
     delay(100);  // Wait for the response to be sent
   });
 
