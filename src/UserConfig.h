@@ -16,6 +16,7 @@ class UserConfig {
 
   struct Display {
     bool darkMode = false;
+    char timezone[50] = "AEST-10AEDT,M10.1.0,M4.1.0/3";  // Default timezone (Melbourne)
   };
 
   struct Energy {

@@ -6,7 +6,7 @@
 Preferences prefs;
 
 const char* UserConfig::PREFERENCES_NAMESPACE = "user_config";
-const int UserConfig::VERSION = 1;
+const int UserConfig::VERSION = 2;
 
 bool UserConfig::Wifi::isSet() const { return strlen(ssid) > 0; }
 
@@ -52,6 +52,7 @@ bool UserConfig::load() {
 
   // Load Display config
   display.darkMode = prefs.getBool("dark_mode", false);
+  prefs.getString("timezone", display.timezone, sizeof(display.timezone));
 
   // Load Energy config
   energy.syncInterval = prefs.getInt("sync_interval", 4);  // Default 4 hours
@@ -78,6 +79,7 @@ bool UserConfig::save() {
 
   // Save Display config
   prefs.putBool("dark_mode", display.darkMode);
+  prefs.putString("timezone", display.timezone);
 
   // Save Energy config
   prefs.putInt("sync_interval", energy.syncInterval);

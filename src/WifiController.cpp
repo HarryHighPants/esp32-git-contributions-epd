@@ -7,6 +7,15 @@
 WifiController::WifiController(UserConfig *config) { this->config = config; }
 
 bool WifiController::connectWifi() const {
+  if (WiFi.getMode() != WIFI_STA) {
+    Serial.println("Setting WiFi mode to STA");
+    WiFi.mode(WIFI_STA);
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    return true;
+  }
+
   constexpr unsigned long timeout = 6000;  // 6 seconds timeout
 
   WiFi.begin(config->wifi.ssid, config->wifi.password);

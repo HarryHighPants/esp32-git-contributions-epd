@@ -6,6 +6,7 @@
 #include "ContributionsApi.h"
 #include "DisplayController.h"
 #include "SleepController.h"
+#include "TimeUtils.h"
 #include "UserConfig.h"
 #include "WifiController.h"
 #include "screens/CommitGraphScreen.h"
@@ -72,6 +73,8 @@ void setup() {
     // This shouldn't be reached, as loadConfigAndRestart() will restart the device
     return;
   }
+
+  TimeUtils::setDeviceTime(&wifiController, &config);
 
   commitGraphScreen.fetchAndDraw();
 }
