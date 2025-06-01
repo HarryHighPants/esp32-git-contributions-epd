@@ -11,7 +11,7 @@
 #include "screens/CommitGraphScreen.h"
 #include "screens/ConfigModeScreen.h"
 
-UserConfig config = UserConfig::load();
+UserConfig config;
 RTC_DATA_ATTR CommitGraphScreen::State commitGraphScreenState;
 
 // Controllers
@@ -53,6 +53,10 @@ void loadConfigAndRestart() {
 void setup() {
   Serial.begin(115200);
   pinMode(BUTTON_PIN, INPUT);
+
+  // Load config from NVS
+  delay(10);  // TODO: Would love to remove this, but it seems like config.load() hangs if there is no delay in here
+  config.load();
 
   const SleepController::WakeReason wakeReason = SleepController::getWakeReason();
   if (wakeReason == SleepController::WakeReason::BUTTON_HOLD) {

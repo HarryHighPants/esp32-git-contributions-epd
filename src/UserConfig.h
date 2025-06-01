@@ -23,13 +23,15 @@ class UserConfig {
   };
 
   bool isSet() const;
-  static UserConfig load();
-  void save();
+  bool load();
+  bool save();
 
   Wifi wifi;
   CommitGraph commitGraph;
   Display display;
   Energy energy;
 
+ private:
   static const char *PREFERENCES_NAMESPACE;
+  static const int VERSION;
 };
