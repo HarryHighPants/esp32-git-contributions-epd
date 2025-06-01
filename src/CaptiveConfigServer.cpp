@@ -14,12 +14,12 @@ WebServer server(80);
 
 String buildConfigHtml(const UserConfig* config) {
   auto html = String(ConfigHtml);
-  html.replace("{{username}}", config->username);
-  html.replace("{{wifi-ssid}}", config->wifiSSID);
-  html.replace("{{wifi-password}}", config->wifiPassword);
-  html.replace("{{interval}}", String(config->syncInterval));
-  html.replace("{{dark-mode}}", config->darkMode ? "checked" : "");
-  html.replace("{{url}}", config->apiUrl);
+  html.replace("{{wifi-ssid}}", config->wifi.ssid);
+  html.replace("{{wifi-password}}", config->wifi.password);
+  html.replace("{{username}}", config->commitGraph.username);
+  html.replace("{{url}}", config->commitGraph.apiUrl);
+  html.replace("{{interval}}", String(config->energy.syncInterval));
+  html.replace("{{dark-mode}}", config->display.darkMode ? "checked" : "");
   return html;
 }
 
@@ -38,16 +38,15 @@ void CaptiveConfigServer::begin() {
 
   server.on("/submit", [this] {
     // Read the form values from the param and store them in RTC memory
-    strcpy(this->config->username, server.arg("username").c_str());
-    strcpy(this->config->username, server.arg("username").c_str());
-    strcpy(this->config->wifiSSID, server.arg("wifi-ssid").c_str());
-    strcpy(this->config->wifiPassword, server.arg("wifi-password").c_str());
-    strcpy(this->config->apiUrl, server.arg("url").c_str());
-    this->config->syncInterval = server.arg("interval").toInt();
-    this->config->darkMode = server.hasArg("dark-mode");
+    strcpy(this->config->wifi.ssid, server.arg("wifi-ssid").c_str());
+    strcpy(this->config->wifi.password, server.arg("wifi-password").c_str());
+    strcpy(this->config->commitGraph.username, server.arg("username").c_str());
+    strcpy(this->config->commitGraph.apiUrl, server.arg("url").c_str());
+    this->config->energy.syncInterval = server.arg("interval").toInt();
+    this->config->display.darkMode = server.hasArg("dark-mode");
     this->loaded = true;
 
-    Serial.println("Saved updated config");
+    Serial.println("Recieved updated config");
 
     server.send(200, "text/html", ConfigSavedHtml);
     delay(100);  // Wait for the response to be sent
@@ -67,7 +66,7 @@ bool CaptiveConfigServer::getConfig() const {
   const unsigned long configStartMillis = millis();
 
   while (true) {
-    if (this->loaded) {
+    if (loaded) {
       return true;
     }
 

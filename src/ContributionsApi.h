@@ -4,14 +4,14 @@
 #include "DeviceConfig.h"
 #include "UserConfig.h"
 
-struct CommitGraphContributions {
-  int week[WEEKS * 7] = {};
-};
-
 class ContributionsApi {
  public:
+  struct Data {
+    int week[WEEKS * 7] = {};
+  };
+
   explicit ContributionsApi(UserConfig* config);
-  bool fetchContributionsData(CommitGraphContributions* contributions) const;
+  bool fetchContributionsData(Data* contributions) const;
 
  private:
   UserConfig* config;

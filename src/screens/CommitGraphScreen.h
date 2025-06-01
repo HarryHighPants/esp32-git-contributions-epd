@@ -4,18 +4,18 @@
 #include "UserConfig.h"
 #include "WifiController.h"
 
-struct CommitGraphScreenState {
-  CommitGraphContributions contributions;
-  bool showingWifiError = false;
-  bool showingFetchError = false;
-
-  bool storeContributionIfChanged(const CommitGraphContributions *newContributions);
-};
-
 class CommitGraphScreen {
  public:
+  struct State {
+    ContributionsApi::Data contributions;
+    bool showingWifiError = false;
+    bool showingFetchError = false;
+
+    bool storeContributionIfChanged(const ContributionsApi::Data *newContributions);
+  };
+
   explicit CommitGraphScreen(DisplayController *displayController, WifiController *wifiController,
-                             ContributionsApi *contributionsApi, UserConfig *config, CommitGraphScreenState *state);
+                             ContributionsApi *contributionsApi, UserConfig *config, State *state);
   void fetchAndDraw() const;
   void resetState() const;
 
@@ -25,7 +25,7 @@ class CommitGraphScreen {
   void drawFetchError() const;
   DisplayController *displayController;
   WifiController *wifiController;
-  CommitGraphScreenState *state;
   ContributionsApi *contributionsApi;
   UserConfig *config;
+  State *state;
 };
