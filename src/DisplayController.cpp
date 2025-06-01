@@ -65,7 +65,8 @@ uint16_t DisplayController::getTextWidth(const String &text, const GFXfont *font
 }
 
 void DisplayController::drawBatteryIcon(const int x, const int y, const int percentage) {
-  constexpr int batteryWidth = 7;
+  // 1 column on left, 2 columns on right, 5 columns of battery body
+  constexpr int batteryWidth = 8;
   constexpr int batteryHeight = 5;
 
   // Top line
@@ -79,9 +80,9 @@ void DisplayController::drawBatteryIcon(const int x, const int y, const int perc
   display.drawLine(x + batteryWidth - 1, y + 1, x + batteryWidth - 1, y + batteryHeight - 2, colors.darkForeground);
 
   // The +1 is to round up, so that we always fill at least one pixel
-  int filledWidth = percentage * (batteryWidth - 2) / 100 + 1;
-  if (filledWidth > batteryWidth - 2) {
-    filledWidth = batteryWidth - 2;  // Ensure we don't overflow
+  int filledWidth = percentage * (batteryWidth - 3) / 100 + 1;
+  if (filledWidth > batteryWidth - 3) {
+    filledWidth = batteryWidth - 3;  // Ensure we don't overflow
   }
   display.fillRect(x + 1, y + 1, filledWidth, batteryHeight - 2, colors.lightForeground);
 }
