@@ -22,6 +22,7 @@ class DisplayController {
   void drawText(const String &text, int x, int y, int textSize, uint16_t color);
   void drawText(const String &text, int x, int y, const GFXfont *font);
   void drawText(const String &text, int x, int y, int textSize, uint16_t color, const GFXfont *font);
+  uint16_t getTextWidth(const String &text, const GFXfont *font);
   void drawBatteryIcon(int x, int y, int percentage);
   void displayAndHibernate();
 

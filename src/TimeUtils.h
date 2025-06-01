@@ -9,6 +9,7 @@ class TimeUtils {
  public:
   static void setDeviceTime(const WifiController *wifiController, const UserConfig *config);
   static String nowString();
+  static String shortNowString();
 
  private:
   static RTC_DATA_ATTR long timeSetAt;

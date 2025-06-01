@@ -77,14 +77,15 @@ void CommitGraphScreen::draw() const {
 
   // Draw battery icon & percentage
   const int batteryPercentage = PowerController::getBatteryPercentage();
-  displayController->drawBatteryIcon(8, displayController->display.height() - 5, batteryPercentage);
-  displayController->drawText(String(batteryPercentage) + "%", 18,
-                              displayController->display.height() - 1, 1, displayController->colors.darkForeground,
-                              &Tiny5_Regular5pt7b);
+  displayController->drawBatteryIcon(8, displayController->display.height() - 6, batteryPercentage);
+  displayController->drawText(String(batteryPercentage) + "%", 18, displayController->display.height() - 2, 1,
+                              displayController->colors.darkForeground, &Tiny5_Regular5pt7b);
 
   // Draw the current time
-  displayController->drawText(TimeUtils::nowString(), displayController->display.width() - 90,
-                              displayController->display.height() - 1, 1, displayController->colors.darkForeground,
+  const String nowString = TimeUtils::shortNowString();
+  const auto size = displayController->getTextWidth(nowString, &Tiny5_Regular5pt7b);
+  displayController->drawText(TimeUtils::shortNowString(), displayController->display.width() - size - 8,
+                              displayController->display.height() - 2, 1, displayController->colors.darkForeground,
                               &Tiny5_Regular5pt7b);
 
   // Draw the updates

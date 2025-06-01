@@ -55,6 +55,15 @@ void DisplayController::drawText(const String &text, const int x, const int y, c
   display.print(text);
 }
 
+uint16_t DisplayController::getTextWidth(const String &text, const GFXfont *font) {
+  uint16_t textWidth;
+  uint16_t a;
+  int16_t b;
+  int16_t c;
+  display.getTextBounds(text, 0, 0, &b, &c, &textWidth, &a);
+  return textWidth;
+}
+
 void DisplayController::drawBatteryIcon(const int x, const int y, const int percentage) {
   constexpr int batteryWidth = 7;
   constexpr int batteryHeight = 5;
